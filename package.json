@@ -1,0 +1,16 @@
+{
+  "name": "user-finder",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "nodemon ./bin/www"
+  },
+  "dependencies": {
+    "dotenv": "^8.0.0",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "mssql": "^5.1.0",
+    "sequelize": "^5.10.2",
+    "twit": "^2.2.11"
+  }
+}
