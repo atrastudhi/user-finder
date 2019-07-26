@@ -19,33 +19,33 @@ var T = new Twit({
   access_token_secret:  process.env.ACCESS_TOKEN_SECRET
 })
 
-app.get('/find/:tweetid', async (req, res) => {
+app.get('/:tweetid', async (req, res) => {
   try {
     const dm = await sequelize.query(`SELECT * FROM jeketifess_dm.DBO.DirectMessages WHERE content_dm LIKE '${req.params.tweetid}'`)
-    
-    let userid = dm[0][0].user_id
 
-    T.get('users/lookup', { user_id: userid }, (err, data, response) => {
-        if (err) {
-            res.status(500).json(err)
-        } else {
-          if (data.length < 1) {
-            res.status(500).json({
-              message: 'user not found'
-            })
-          } else {
-            res.status(200).json({
-              username: data[0].screen_name,
-              bio: data[0].description,
-              followers: data[0].followers_count
-            }) 
-          }
-        }
-    })
+    if (!dm[0].length) {
+      res.status(400).json({
+        message: 'kadit ada cuy'
+      })
+    } else {
+      res.status(200).json(dm[0][0])
+    }
 
   } catch (err) {
     res.status(500).json(err)
   }  
+})
+
+app.get('/sikat/:tweetid', async (req, res) => {
+  try {
+    T.post('statuses/destroy/:id', { id: req.params.tweetid }, function (err, data, response) {
+      res.status(200).json({
+        message: 'dah keapus cuyy'
+      })
+    })
+  } catch (err) {
+    res.status(500).json(err)
+  }
 })
 
 // catch 404 and forward to error handler
